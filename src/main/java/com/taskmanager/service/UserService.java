@@ -30,6 +30,26 @@ public class UserService {
 
     public Optional<User> getUserById(Long id) { return userRepository.findById(id); }
 
+    public Optional<User> updateUser(Long id, User updatedUser) {
+        Optional<User> existingUserOptional = userRepository.findById(id);
+
+        if(existingUserOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        User existingUser = existingUserOptional.get();
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setPassword(updatedUser.getPassword());
+        existingUser.setDateOfBirth(updatedUser.getDateOfBirth());
+        existingUser.setDateOfJoining(updatedUser.getDateOfJoining());
+        existingUser.setAvatarUrl(updatedUser.getAvatarUrl());
+
+        User savedUser = userRepository.save(existingUser);
+        return Optional.of(savedUser);
+    }
+
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }

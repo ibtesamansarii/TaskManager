@@ -62,7 +62,7 @@ public class TaskController {
         return ResponseEntity.ok(tasks);
     }
 
-    @GetMapping("/user/{userId}/status/{statusId}")
+    @GetMapping("/user/{userId}/status/{status}")
     public ResponseEntity<List<Task>> getTasksByUser(@PathVariable Long userId, @PathVariable TaskStatus status) {
         Optional<User> user = userService.getUserById(userId);
 
@@ -72,6 +72,28 @@ public class TaskController {
 
         List<Task> tasks = taskService.getTasksByUserAndStatus(user.get(), status);
         return ResponseEntity.ok(tasks);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        Optional<Task> task = taskService.updateTask(id, updatedTask);
+
+//        if(task.isPresent()) {
+//            return ResponseEntity.ok(task.get());
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+
+        return task.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{id}/status/{status}")
+    public ResponseEntity<Task> updateTaskStatus(@PathVariable Long id, @PathVariable TaskStatus status) {
+        Optional<Task> task = taskService.updateTaskStatus(id, status);
+
+        return task.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")

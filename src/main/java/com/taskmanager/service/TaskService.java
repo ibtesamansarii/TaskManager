@@ -36,8 +36,37 @@ public class TaskService {
         return taskRepository.findByUserAndStatus(user, status);
     }
 
-    public Task updateTask(Task task) {
-        return taskRepository.save(task);
+    public Optional<Task> updateTask(Long id, Task updatedTask) {
+
+        Optional<Task> existingTaskOptional = taskRepository.findById(id);
+
+        if(existingTaskOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Task existingTask = existingTaskOptional.get();
+        existingTask.setTitle(updatedTask.getTitle());
+        existingTask.setDescription(updatedTask.getDescription());
+        existingTask.setStatus(updatedTask.getStatus());
+        existingTask.setDueDate(updatedTask.getDueDate());
+
+        Task savedTask = taskRepository.save(existingTask);
+        return Optional.of(savedTask);
+    }
+
+    public Optional<Task> updateTaskStatus(Long id, TaskStatus status) {
+
+        Optional<Task> existingTaskOptional = taskRepository.findById(id);
+
+        if(existingTaskOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Task existingTask = existingTaskOptional.get();
+        existingTask.setStatus(status);
+
+        Task savedTask = taskRepository.save(existingTask);
+        return Optional.of(savedTask);
     }
 
     public void deleteTask(Long id) {
