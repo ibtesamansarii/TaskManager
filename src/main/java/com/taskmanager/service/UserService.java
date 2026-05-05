@@ -2,7 +2,9 @@ package com.taskmanager.service;
 
 import com.taskmanager.entity.User;
 import com.taskmanager.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,13 +13,32 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
+    }
+
+    public Optional<User> loginUser(String email, String Password) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+
+        if(userOptional.isEmpty()) {
+            return Optional.empty();
+        }
+
+        User user = userOptional.get();
+
+        if(passwordEncoder.matches(Password, user.getPassword())) {
+            return Optional.of(user);
+        }
+
+        return Optional.empty();
     }
 
     public List<User> getAllUsers() {
@@ -41,7 +62,7 @@ public class UserService {
         existingUser.setFirstName(updatedUser.getFirstName());
         existingUser.setLastName(updatedUser.getLastName());
         existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPassword(updatedUser.getPassword());
+        existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         existingUser.setDateOfBirth(updatedUser.getDateOfBirth());
         existingUser.setDateOfJoining(updatedUser.getDateOfJoining());
         existingUser.setAvatarUrl(updatedUser.getAvatarUrl());

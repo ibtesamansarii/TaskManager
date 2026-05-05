@@ -1,12 +1,22 @@
 package com.taskmanager.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDate;
 
 public class CreateUserRequest {
 
+    @NotBlank(message = "First Name is Required")
     private String firstName;
+
+    @NotBlank(message = "Last Name is Required")
     private String lastName;
+
+    @NotBlank(message = "Email is Required")
+    @Email(message = "Email Format is Invalid")
     private String email;
+
     private String password;
     private LocalDate dateOfBirth;
     private LocalDate dateOfJoining;

@@ -1,12 +1,15 @@
 package com.taskmanager.dto;
 
 import com.taskmanager.entity.TaskStatus;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 
 public class CreateTaskRequest {
 
+    @NotBlank(message = "Title is Required")
     private String title;
+
     private String description;
     private TaskStatus status;
     private LocalDate dueDate;

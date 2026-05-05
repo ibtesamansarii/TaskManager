@@ -7,6 +7,7 @@ import com.taskmanager.entity.TaskStatus;
 import com.taskmanager.entity.User;
 import com.taskmanager.service.TaskService;
 import com.taskmanager.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class TaskController {
     }
 
     @PostMapping("/user/{userId}")
-    public ResponseEntity<TaskResponse> createTask(@PathVariable Long userId, @RequestBody CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> createTask(@PathVariable Long userId, @Valid @RequestBody CreateTaskRequest request) {
         Optional<User> user = userService.getUserById(userId);
 
         if(user.isEmpty()) {
@@ -106,7 +107,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody CreateTaskRequest request) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @Valid @RequestBody CreateTaskRequest request) {
         Task updatedTask = mapToTask(request);
         Optional<Task> task = taskService.updateTask(id, updatedTask);
 

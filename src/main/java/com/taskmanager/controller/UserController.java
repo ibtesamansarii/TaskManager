@@ -4,6 +4,7 @@ import com.taskmanager.dto.CreateUserRequest;
 import com.taskmanager.dto.UserResponse;
 import com.taskmanager.entity.User;
 import com.taskmanager.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
         User user = mapToUser(request);
         User savedUser = userService.createUser(user);
         UserResponse response = mapToUserResponse(savedUser);
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody CreateUserRequest request) {
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody CreateUserRequest request) {
         User updatedUser = mapToUser(request);
         Optional<User> user = userService.updateUser(id, updatedUser);
 
