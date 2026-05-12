@@ -7,7 +7,7 @@ public class LoginRequest {
 
     @NotBlank(message = "Email is required")
     @Email(message = "Email format is invalid")
-    private String Email;
+    private String email;
 
     @NotBlank(message = "Password is required")
     private String password;
@@ -16,11 +16,11 @@ public class LoginRequest {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {

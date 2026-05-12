@@ -3,16 +3,18 @@ package com.taskmanager.dto;
 public class LoginResponse {
 
     private String message;
-    private String userId;
+    private Long userId;
     private String email;
+    private String token;
 
     public LoginResponse() {
     }
 
-    public LoginResponse(String message, String userId, String email) {
+    public LoginResponse(String message, Long userId, String email, String token) {
         this.message = message;
         this.userId = userId;
         this.email = email;
+        this.token = token;
     }
 
     public String getMessage() {
@@ -23,11 +25,11 @@ public class LoginResponse {
         this.message = message;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -37,5 +39,13 @@ public class LoginResponse {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
